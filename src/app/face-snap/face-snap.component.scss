@@ -1,0 +1,44 @@
+.face-snap-card {
+  width: 50%;
+  border-radius: 3px;
+  box-shadow: var(--boxShadow);
+  padding: 1rem;
+  margin: 1rem auto;
+  background-color: var(--color2);
+  color: var(--color4);
+
+  h2 {
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: var(--boxShadow);
+  }
+
+  p {
+    font-weight: 300;
+    font-size: 1.1rem;
+  }
+
+  span {
+    padding: 0 1rem;
+  }
+}
+
+.snapped {
+  background-color: var(--color3);
+  color: var(--color5);
+
+  button {
+    color: var(--color1);
+    background-color: var(--color5);
+    box-shadow: 0 0 5px var(--color2);
+    &:active {
+      transform: translate(1px, 1px);
+      box-shadow: 0 0 5px var(--color4);
+    }
+  }
+}

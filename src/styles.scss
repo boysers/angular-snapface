@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --color1: #0d1b2a;
+  --color2: #1b263b;
+  --color3: #415a77;
+  --color4: #778da9;
+  --color5: #e0e1dd;
+  --boxShadow: 0 4px 5px rgb(0, 10, 20);
+}
+
+* {
+  font-family: Roboto, Helvetiva, sans-serif;
+}
+
+body {
+  background-color: var(--color1);
+  color: var(--color5);
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background-color: var(--color3);
+  color: var(--color5);
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 4px 4px 7px var(--color1);
+  cursor: pointer;
+  font-size: 1.1rem;
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0 0 5px var(--color3);
+  }
+}
