@@ -1,8 +1,16 @@
-FROM node:16
+FROM node:16 AS builder
 
-RUN npm install -g @angular/cli
-
-ADD . /app/
 WORKDIR /app
-RUN npm install \
-  && ng build
+
+COPY package*.json ./
+
+RUN npm install && \
+    npm install -g @angular/cli
+
+COPY . .
+
+RUN ng build --prod
+
+FROM nginx:1.21.6
+
+COPY --from=builder /app/dist/* /usr/share/nginx/html

@@ -1,13 +1,24 @@
 version: '3.8'
 services:
+  frontend:
+    build: .
+    volumes:
+      - ./frontend:/etc/nginx/conf.d
+    container_name: frontend-angular
+    depends_on:
+      - api
+
   api:
     build: ./api
+    command: npx json-server --watch db.json --host 0.0.0.0
+    container_name: api-json-server
+    depends_on:
+      - reverse_proxy
+
+  reverse_proxy:
+    image: nginx:latest
+    volumes:
+      - ./reverse_proxy:/etc/nginx/conf.d
+    container_name: reverse_proxy
     ports:
-      - "3000:3000"
-    command: sh -c "npx json-server --watch db.json --host 0.0.0.0"
-  angular:
-    container_name: frontend-angular
-    build: .
-    ports:
-      - "4200:4200"
-    command: sh -c "cd dist && ng serve --host 0.0.0.0 --port 4200"
+      - "8080:80"

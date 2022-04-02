@@ -1,11 +1,9 @@
-FROM node:16.14.2-buster
+FROM node:16.3.0-alpine
 
-RUN mkdir /src/
-WORKDIR /src
-RUN apt-get update -yq \
-  && apt install git -yq \
-  && git clone https://github.com/boysers/angular-intermediate-backend.git app
+RUN apk update && \
+    apk add git &&  \
+    git clone https://github.com/boysers/angular-intermediate-backend.git app
 
-WORKDIR /src/app
+WORKDIR /app
 
-CMD npm install
+RUN npm install

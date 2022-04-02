@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { FaceSnap } from '../models/face-snap.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FaceSnapsService {
+  url: string = `${location.protocol}//${location.hostname}:${location.port}/api`
 
   constructor(private http: HttpClient) {}
 
   getAllFaceSnaps(): Observable<FaceSnap[]> {
-    return this.http.get<FaceSnap[]>('http://localhost:3000/facesnaps');
+    return this.http.get<FaceSnap[]>(`${this.url}/facesnaps`);
   }
 
   getFaceSnapById(faceSnapId: number): Observable<FaceSnap> {
-    return this.http.get<FaceSnap>(`http://localhost:3000/facesnaps/${faceSnapId}`);
+    return this.http.get<FaceSnap>(`${this.url}/facesnaps/${faceSnapId}`);
   }
 
   snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): Observable<FaceSnap> {
@@ -24,7 +25,7 @@ export class FaceSnapsService {
         ...faceSnap,
         snaps: faceSnap.snaps + (snapType === 'snap' ? 1 : -1)
       })),
-      switchMap(updatedFaceSnap => this.http.put<FaceSnap>(`http://localhost:3000/facesnaps/${faceSnapId}`, updatedFaceSnap))
+      switchMap(updatedFaceSnap => this.http.put<FaceSnap>(`${this.url}/facesnaps/${faceSnapId}`, updatedFaceSnap))
     )
   }
 
@@ -38,7 +39,7 @@ export class FaceSnapsService {
         snaps: 0,
         id: previousFaceSnap.id + 1,
       })),
-      switchMap(createdFaceSnap => this.http.post<FaceSnap>('http://localhost:3000/facesnaps', createdFaceSnap))
+      switchMap(createdFaceSnap => this.http.post<FaceSnap>(`${this.url}/facesnaps`, createdFaceSnap))
     );
   }
 }
