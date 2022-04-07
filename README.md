@@ -2,8 +2,13 @@
 
 port: 8080
 ```bash
-docker-compose up
+# Pour le mode développement port: 4200 | http://localhost:4200
+sh docker-dev.sh
+
+# Pour le mode production port: 8080 | http://localhost:8080
+sh docker-build.sh
 ```
+
 http://localhost:8080
 
 #

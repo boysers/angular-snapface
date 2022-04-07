@@ -4,21 +4,31 @@ services:
     build: .
     volumes:
       - ./frontend:/etc/nginx/conf.d
-    container_name: frontend-angular
-    depends_on:
-      - api
+    container_name: frontend-build
+    networks:
+      - api-network
 
   api:
     build: ./api
     command: npx json-server --watch db.json --host 0.0.0.0
-    container_name: api-json-server
-    depends_on:
-      - reverse_proxy
+    container_name: api-build
+    networks:
+      - frontend-network
 
   reverse_proxy:
-    image: nginx:latest
+    image: nginx:1.21.6
     volumes:
       - ./reverse_proxy:/etc/nginx/conf.d
-    container_name: reverse_proxy
+    container_name: proxy-build
     ports:
       - "8080:80"
+    depends_on:
+      - api
+      - frontend
+    networks:
+      - frontend-network
+      - api-network
+
+networks:
+  frontend-network:
+  api-network:

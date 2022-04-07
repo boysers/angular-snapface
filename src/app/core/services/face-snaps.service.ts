@@ -7,7 +7,7 @@ import { FaceSnap } from '../models/face-snap.model';
   providedIn: 'root',
 })
 export class FaceSnapsService {
-  url: string = `${location.protocol}//${location.hostname}:${location.port}/api`
+  url: string = '/api';
 
   constructor(private http: HttpClient) {}
 
@@ -19,27 +19,42 @@ export class FaceSnapsService {
     return this.http.get<FaceSnap>(`${this.url}/facesnaps/${faceSnapId}`);
   }
 
-  snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): Observable<FaceSnap> {
+  snapFaceSnapById(
+    faceSnapId: number,
+    snapType: 'snap' | 'unsnap'
+  ): Observable<FaceSnap> {
     return this.getFaceSnapById(faceSnapId).pipe(
-      map(faceSnap => ({
+      map((faceSnap) => ({
         ...faceSnap,
-        snaps: faceSnap.snaps + (snapType === 'snap' ? 1 : -1)
+        snaps: faceSnap.snaps + (snapType === 'snap' ? 1 : -1),
       })),
-      switchMap(updatedFaceSnap => this.http.put<FaceSnap>(`${this.url}/facesnaps/${faceSnapId}`, updatedFaceSnap))
-    )
+      switchMap((updatedFaceSnap) =>
+        this.http.put<FaceSnap>(
+          `${this.url}/facesnaps/${faceSnapId}`,
+          updatedFaceSnap
+        )
+      )
+    );
   }
 
-  addFaceSnap(formValue: { title: string, description: string, imageUrl: string, location?: string }): Observable<FaceSnap> {
+  addFaceSnap(formValue: {
+    title: string;
+    description: string;
+    imageUrl: string;
+    location?: string;
+  }): Observable<FaceSnap> {
     return this.getAllFaceSnaps().pipe(
-      map(faceSnaps => [...faceSnaps].sort((a , b) => a.id - b.id)),
-      map(sortedFaceSnaps => sortedFaceSnaps[sortedFaceSnaps.length - 1]),
-      map(previousFaceSnap => ({
+      map((faceSnaps) => [...faceSnaps].sort((a, b) => a.id - b.id)),
+      map((sortedFaceSnaps) => sortedFaceSnaps[sortedFaceSnaps.length - 1]),
+      map((previousFaceSnap) => ({
         ...formValue,
         createdDate: new Date(),
         snaps: 0,
         id: previousFaceSnap.id + 1,
       })),
-      switchMap(createdFaceSnap => this.http.post<FaceSnap>(`${this.url}/facesnaps`, createdFaceSnap))
+      switchMap((createdFaceSnap) =>
+        this.http.post<FaceSnap>(`${this.url}/facesnaps`, createdFaceSnap)
+      )
     );
   }
 }
