@@ -1,19 +1,15 @@
 version: '3.8'
 services:
-  angular-dev:
+  client:
     build: 
       context: .
-      dockerfile: Dockerfile-dev
+      dockerfile: .docker/dev.dockerfile
     ports:
       - "4200:4200"
-    container_name: angular-dev
-    command: sh -c "npm install && ng serve --host=0.0.0.0 --port 4200"
+    command: ng serve --host=0.0.0.0 --port 4200
     volumes:
       - .:/app
 
-  api-dev:
-    build: ./api
-    command: npx json-server --watch db.json --host 0.0.0.0 --port 3000
-    container_name: api-dev
+  api:
     ports:
       - "3000:3000"

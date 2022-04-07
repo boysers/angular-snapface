@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  client:
+    build:
+      context: .
+      dockerfile: .docker/prod.dockerfile
+
+  nginx:
+    container_name: reverse_proxy
+    build: 
+      context: .
+      dockerfile: reverse_proxy/prod.dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - client
+      - api
